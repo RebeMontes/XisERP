@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('folio_sequences', function (Blueprint $table) {
             $table->id();
-            $table->string('sequence_type', 30)->unique();
-            $table->unsignedSmallInteger('year', 4)->unique();
+            $table->string('sequence_type', 30);
+            $table->unsignedSmallInteger('year');
             $table->unsignedBigInteger('last_number')->default(0);
+            $table->unique(['sequence_type', 'year']);
             $table->timestamps();
         });
     }

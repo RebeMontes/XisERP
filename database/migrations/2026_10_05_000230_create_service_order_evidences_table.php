@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('stage', 30)->index();
             $table->string('file_path', 500);
             $table->string('mime_type', 100);
+            $table->unsignedBigInteger('size_bytes')->default(0);
             $table->timestamps();
         });
     }

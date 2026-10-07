@@ -15,10 +15,11 @@ return new class extends Migration
             $table->id();
             #$table->string('user_id');
             $table->string('action', 100)->index();
-            $table->string('entity_type', 100)->index();
-            $table->unsignedBigInteger('entity_id')->index();
+            $table->string('entity_type', 100);
+            $table->unsignedBigInteger('entity_id');
             $table->json('details')->nullable();
             $table->string('ip_address', 45)->nullable()->index();
+            $table->index(['entity_type', 'entity_id']);
             $table->timestamps();
         });
     }
