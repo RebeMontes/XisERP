@@ -12,8 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('product_taxes', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+            $table->biginteger('product_id')->unsigned()->unique();
+            $table->biginteger('tax_id')->unsigned()->unique();
+            $table->primary(['product_id', 'tax_id']);
         });
     }
 
