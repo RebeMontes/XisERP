@@ -3,6 +3,11 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Models\Customer;
+use App\Models\Product;
+use App\Models\Category;
+use App\Models\Subcategory;
+use App\Models\Brand;
 
 return new class extends Migration
 {
@@ -13,11 +18,13 @@ return new class extends Migration
     {
         Schema::create('customer_assets', function (Blueprint $table) {
             $table->id();
-            #$table->string('customer_id'); bigint unsigned?
-            #$table->string('product_id')->nullable(); bigint unsigned?
+            $table->foreignIdFor(Customer::class)->constrained();
+            $table->foreignIdFor(Product::class)->constrained();
+            $table->foreignIdFor(Category::class)->constrained();
+            $table->foreignIdFor(Subcategory::class)->constrained();
             $table->string('asset_type', 30)->index();
             $table->string('name', 150)->index();
-            #$table->string('brand')->nullable(); bigint unsigned?
+            $table->foreignIdFor(Brand::class)->constrained();
             $table->string('model', 100)->nullable()->index();
             $table->string('serial_number', 100)->nullable()->index();
             $table->string('imei', 20)->nullable()->index();

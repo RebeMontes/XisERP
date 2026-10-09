@@ -3,6 +3,10 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Models\Customer;
+use App\Models\CustomerAsset;
+use App\Models\Product;
+use App\Models\ServiceOrder;
 
 return new class extends Migration
 {
@@ -13,10 +17,10 @@ return new class extends Migration
     {
         Schema::create('licenses', function (Blueprint $table) {
             $table->id();
-            #$table->string('customer_id');
-            #$table->string('custormer_asset_id');
-            #$table->string('product_id');
-            #$table->string('service_order_id')->nullable();
+            $table->foreignIdFor(Customer::class)->constrained();
+            $table->foreignIdFor(CustomerAsset::class)->constrained();
+            $table->foreignIdFor(Product::class)->constrained();
+            $table->foreignIdFor(ServiceOrder::class)->constrained();
             $table->string('license_type', 50)->nullable()->index();
             $table->string('product_name', 200);
             $table->string('version', 50)->nullable();

@@ -3,6 +3,10 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Models\Product;
+use App\Models\ServiceOrder;
+use App\Models\Purchase;
+use App\Models\User;
 
 return new class extends Migration
 {
@@ -13,14 +17,16 @@ return new class extends Migration
     {
         Schema::create('inventory_movements', function (Blueprint $table) {
             $table->id();
-            #$table->string('product_id');
+            $table->foreignIdFor(Product::class)->constrained();
             $table->string('movement_type', 30)->index();
             $table->decimal('quantity', 14, 3);
             $table->decimal('previous_stock', 14, 3);
             $table->decimal('new_stock', 14, 3);
+            $table->foreignIdFor(ServiceOrder::class)->constrained();
+            $table->foreignIdFor(Purchase::class)->constrained();
             $table->string('reference')->nullable()->index();
             $table->text('notes')->nullable();
-            #$table->string('user_id');
+            $table->foreignIdFor(User::class)->constrained();
             $table->timestamps();
         });
     }

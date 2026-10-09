@@ -3,6 +3,8 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Models\ServiceOrder;
+use App\Models\CustomerAsset;
 
 return new class extends Migration
 {
@@ -13,6 +15,8 @@ return new class extends Migration
     {
         Schema::create('service_order_assets', function (Blueprint $table) {
             $table->id();
+            $table->foreignIdFor(ServiceOrder::class)->constrained();
+            $table->foreignIdFor(CustomerAsset::class)->constrained();
             $table->text('reported_problem')->nullable();
             $table->text('requested_service')->nullable();
             $table->text('physical_condition')->nullable();

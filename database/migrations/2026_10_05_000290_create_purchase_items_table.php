@@ -3,6 +3,10 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Models\Purchase;
+use App\Models\Product;
+use App\Models\ServiceOrderItem;
+use App\Models\ServiceOrderAsset;
 
 return new class extends Migration
 {
@@ -13,9 +17,10 @@ return new class extends Migration
     {
         Schema::create('purchase_items', function (Blueprint $table) {
             $table->id();
-            #$table->string('purchase_id');
-            #$table->string('product_id');
-            #$table->string('service_order_item_id')->nullable();
+            $table->foreignIdFor(Purchase::class)->constrained();
+            $table->foreignIdFor(Product::class)->constrained();
+            $table->foreignIdFor(ServiceOrderItem::class)->constrained();
+            $table->foreignIdFor(ServiceOrderAsset::class)->constrained();
             $table->decimal('quantity', 12, 3);
             $table->decimal('unit_cost', 14, 2)->default(0.00);
             $table->decimal('discount_amount', 14, 2)->default(0.00);

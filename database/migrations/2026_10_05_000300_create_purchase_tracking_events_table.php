@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Models\Purchase;
 
 return new class extends Migration
 {
@@ -13,6 +14,7 @@ return new class extends Migration
     {
         Schema::create('purchase_tracking_events', function (Blueprint $table) {
             $table->id();
+            $table->foreignIdFor(Purchase::class)->constrained();
             $table->string('status', 30)->index();
             $table->dateTime('event_at')->index();
             $table->string('location', 150)->nullable();

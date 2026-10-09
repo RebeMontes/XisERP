@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Models\Product;
 
 return new class extends Migration
 {
@@ -13,6 +14,7 @@ return new class extends Migration
     {
         Schema::create('product_prices', function (Blueprint $table) {
             $table->id();
+            $table->foreignIdFor(Product::class)->constrained();
             $table->string('name', 80)->index();
             $table->decimal('amount', 14, 2)->default(0.00);
             $table->tinyInteger('is_default')->default(0)->index();

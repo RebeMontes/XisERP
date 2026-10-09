@@ -3,6 +3,8 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Models\ServiceOrderAsset;
+use App\Models\User;
 
 return new class extends Migration
 {
@@ -13,6 +15,8 @@ return new class extends Migration
     {
         Schema::create('service_order_diagnostics', function (Blueprint $table) {
             $table->id();
+            $table->foreignIdFor(ServiceOrderAsset::class)->constrained();
+            $table->foreignIdFor(User::class, 'technician_id')->constrained();
             $table->text('diagnosis_text');
             $table->string('result_code', 40)->index();
             $table->string('severity', 20)->nullable()->index();

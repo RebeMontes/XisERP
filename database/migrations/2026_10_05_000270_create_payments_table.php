@@ -3,6 +3,8 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Models\ServiceOrder;
+use App\Models\User;
 
 return new class extends Migration
 {
@@ -13,13 +15,13 @@ return new class extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            #$table->string('service_order_id');
+            $table->foreignIdFor(ServiceOrder::class)->constrained();
             $table->dateTime('payment_date')->index();
             $table->decimal('amount', 14, 2)->default(0.00);
             $table->string('payment_method', 30)->index();
             $table->string('reference', 100)->nullable()->index();
             $table->text('notes')->nullable();
-            #$table->string('received_by_user_id');
+            $table->foreignIdFor(User::class, 'received_by_user_id')->constrained();
             $table->timestamps();
         });
     }

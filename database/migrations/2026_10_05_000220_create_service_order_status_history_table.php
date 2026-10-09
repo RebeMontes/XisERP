@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Models\ServiceOrder;
 
 return new class extends Migration
 {
@@ -13,6 +14,7 @@ return new class extends Migration
     {
         Schema::create('service_order_status_history', function (Blueprint $table) {
             $table->id();
+            $table->foreignIdFor(ServiceOrder::class)->constrained();
             $table->string('from_status', 30)->nullable()->index();
             $table->string('to_status', 30)->index();
             $table->string('reason', 255)->nullable();

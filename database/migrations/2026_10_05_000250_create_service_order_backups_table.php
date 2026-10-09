@@ -3,6 +3,8 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Models\ServiceOrder;
+use App\Models\ServiceOrderAsset;
 
 return new class extends Migration
 {
@@ -13,7 +15,8 @@ return new class extends Migration
     {
         Schema::create('service_order_backups', function (Blueprint $table) {
             $table->id();
-            #$table->string('service_order_id');
+            $table->foreignIdFor(ServiceOrder::class)->constrained();
+            $table->foreignIdFor(ServiceOrderAsset::class)->constrained();
             $table->tinyInteger('is_requested')->default(0);
             $table->tinyInteger('was_succesful')->nullable();
             $table->json('content_types')->nullable();

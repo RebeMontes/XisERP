@@ -3,6 +3,8 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Models\ServiceOrder;
+use App\Models\ServiceOrderAsset;
 
 return new class extends Migration
 {
@@ -13,6 +15,8 @@ return new class extends Migration
     {
         Schema::create('service_order_evidences', function (Blueprint $table) {
             $table->id();
+            $table->foreignIdFor(ServiceOrder::class)->constrained();
+            $table->foreignIdFor(ServiceOrderAsset::class)->constrained();
             $table->string('stage', 30)->index();
             $table->string('file_path', 500);
             $table->string('mime_type', 100);

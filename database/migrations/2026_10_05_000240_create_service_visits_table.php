@@ -3,6 +3,8 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Models\ServiceOrder;
+use App\Models\User;
 
 return new class extends Migration
 {
@@ -13,7 +15,8 @@ return new class extends Migration
     {
         Schema::create('service_visits', function (Blueprint $table) {
             $table->id();
-            #$table->string('service_order_id');
+            $table->foreignIdFor(ServiceOrder::class)->constrained();
+            $table->foreignIdFor(User::class, 'technician_id')->constrained();
             $table->string('service_location', 255);
             $table->string('site_contact_name', 150)->nullable();
             $table->dateTime('arrival_at')->index();

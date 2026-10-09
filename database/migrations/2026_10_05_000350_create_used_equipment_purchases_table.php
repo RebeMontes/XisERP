@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Models\ServiceOrder;
 
 return new class extends Migration
 {
@@ -13,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('used_equipment_purchases', function (Blueprint $table) {
             $table->id();
-            #$table->string('service_order_id');
+            $table->foreignIdFor(ServiceOrder::class)->constrained();
             $table->string('seller_name', 150)->index();
             $table->string('presented_identification', 100)->nullable();
             $table->text('equipment_description');

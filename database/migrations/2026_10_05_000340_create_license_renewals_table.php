@@ -3,6 +3,8 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Models\License;
+use App\Models\ServiceOrder;
 
 return new class extends Migration
 {
@@ -13,6 +15,8 @@ return new class extends Migration
     {
         Schema::create('license_renewals', function (Blueprint $table) {
             $table->id();
+            $table->foreignIdFor(License::class)->constrained();
+            $table->foreignIdFor(ServiceOrder::class)->constrained();
             $table->dateTime('previous_expiration_date')->nullable();
             $table->dateTime('new_activation_date')->nullable();
             $table->dateTime('new_expiration_date')->index();

@@ -3,6 +3,8 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Models\Supplier;
+use App\Models\ServiceOrder;
 
 return new class extends Migration
 {
@@ -14,8 +16,8 @@ return new class extends Migration
         Schema::create('purchases', function (Blueprint $table) {
             $table->id();
             $table->string('purchase_number', 30)->unique();
-            #$table->string('supplier_id');
-            #$table->string('service_order_id')->nullable();
+            $table->foreignIdFor(Supplier::class)->constrained();
+            $table->foreignIdFor(ServiceOrder::class)->constrained();
             $table->string('purchase_source', 30)->index();
             $table->string('supplier_order_number', 100)->nullable()->index();
             $table->string('status', 30)->default('pending')->index();

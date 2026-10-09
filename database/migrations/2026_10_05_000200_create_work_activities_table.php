@@ -3,6 +3,8 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Models\ServiceOrderAsset;
+use App\Models\User;
 
 return new class extends Migration
 {
@@ -13,6 +15,8 @@ return new class extends Migration
     {
         Schema::create('work_activities', function (Blueprint $table) {
             $table->id();
+            $table->foreignIdFor(ServiceOrderAsset::class)->constrained();
+            $table->foreignIdFor(User::class, 'technician_id')->constrained();
             $table->string('activity_name', 150)->index();
             $table->text('planned_description')->nullable();
             $table->text('performed_description')->nullable();

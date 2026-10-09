@@ -3,6 +3,9 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Models\ServiceOrder;
+use App\Models\ServiceOrderAsset;
+use App\Models\Product;
 
 return new class extends Migration
 {
@@ -13,8 +16,9 @@ return new class extends Migration
     {
         Schema::create('order_items', function (Blueprint $table) {
             $table->id();
-            #$table->string('service_order_id');
-            #$table->string('product_id')->nullable();
+            $table->foreignIdFor(ServiceOrder::class)->constrained();
+            $table->foreignIdFor(ServiceOrderAsset::class)->constrained();
+            $table->foreignIdFor(Product::class)->constrained();
             $table->string('product_code_snapshot', 50)->nullable();
             $table->string('description', 255);
             $table->decimal('quantity', 12, 3)->default(1.000);

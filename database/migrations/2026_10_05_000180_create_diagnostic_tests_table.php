@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Models\ServiceOrderDiagnostic;
 
 return new class extends Migration
 {
@@ -13,6 +14,7 @@ return new class extends Migration
     {
         Schema::create('diagnostic_tests', function (Blueprint $table) {
             $table->id();
+            $table->foreignIdFor(ServiceOrderDiagnostic::class)->constrained();
             $table->string('test_name', 120)->index();
             $table->string('tool_used', 120)->nullable();
             $table->text('result');
