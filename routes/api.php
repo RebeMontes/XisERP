@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,4 +23,11 @@ Route::prefix('auth')->group(function () {
         Route::post('refresh', [AuthController::class, 'refresh']);
         Route::post('logout', [AuthController::class, 'logout']);
     });
+});
+
+// Protected ERP Resource Routes
+Route::middleware('auth:api')->group(function () {
+    // Módulo de Usuarios
+    Route::patch('users/{user}/toggle-status', [UserController::class, 'toggleStatus']);
+    Route::apiResource('users', UserController::class);
 });
