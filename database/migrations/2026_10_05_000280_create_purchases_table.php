@@ -33,7 +33,7 @@ return new class extends Migration
             $table->string('shipping_company')->nullable()->index();
             $table->string('tracking_number')->nullable()->index();
             $table->text('notes')->nullable();
-            #$table->string('created_by');
+            $table->foreignIdFor(User::class, 'created_by')->constrained();
             $table->timestamps();
         });
     }

@@ -24,6 +24,7 @@ return new class extends Migration
             $table->text('new_encrypted_license_key')->nullable();
             $table->char('new_license_key_last_five', 5)->nullable();
             $table->dateTime('renewed_at')->nullable()->index();
+            $table->foreignIdFor(User::class, 'created_by')->constrained();
             $table->text('notes')->nullable();
             $table->timestamps();
         });
