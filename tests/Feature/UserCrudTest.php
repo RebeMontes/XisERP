@@ -134,4 +134,32 @@ class UserCrudTest extends TestCase
                 'message' => 'No puede desactivar su propia cuenta de usuario mientras tiene la sesión activa.',
             ]);
     }
+
+    public function test_users_are_ordered_alphabetically_by_default(): void
+    {
+        User::create([
+            'name' => 'Zara López',
+            'email' => 'zara_' . time() . '@erp.com',
+            'password' => Hash::make('clave123'),
+            'role' => 'technician',
+            'is_active' => true,
+        ]);
+
+        User::create([
+            'name' => 'Ana Morales',
+            'email' => 'ana_' . time() . '@erp.com',
+            'password' => Hash::make('clave123'),
+            'role' => 'technician',
+            'is_active' => true,
+        ]);
+
+        $response = $this->withHeader('Authorization', "Bearer {$this->token}")
+            ->getJson('/api/users');
+
+        $response->assertStatus(200);
+        $names = collect($response->json('data'))->pluck('name')->values()->all();
+        $sortedNames = $names;
+        sort($sortedNames, SORT_NATURAL | SORT_FLAG_CASE);
+        $this->assertEquals($sortedNames, $names);
+    }
 }

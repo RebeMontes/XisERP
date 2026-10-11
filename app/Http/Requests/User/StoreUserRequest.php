@@ -7,7 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 class StoreUserRequest extends FormRequest
 {
     /**
-     * Determine if the user is authorized to make this request.
+     * Determina si el usuario está autorizado para registrar cuentas.
      */
     public function authorize(): bool
     {
@@ -15,7 +15,7 @@ class StoreUserRequest extends FormRequest
     }
 
     /**
-     * Prepare the data for validation.
+     * Sanitiza los datos de entrada antes de aplicar las reglas.
      */
     protected function prepareForValidation(): void
     {
@@ -27,9 +27,7 @@ class StoreUserRequest extends FormRequest
     }
 
     /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * Reglas de validación para registrar un nuevo usuario.
      */
     public function rules(): array
     {
@@ -43,9 +41,7 @@ class StoreUserRequest extends FormRequest
     }
 
     /**
-     * Custom validation messages in Spanish.
-     *
-     * @return array<string, string>
+     * Mensajes de error personalizados en español.
      */
     public function messages(): array
     {

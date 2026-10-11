@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Hash;
 class UserController extends Controller
 {
     /**
-     * Display a paginated listing of users with search and filters.
+     * Listado paginado de usuarios con búsqueda, filtros y ordenamiento.
      */
     public function index(Request $request): JsonResponse
     {
@@ -28,7 +28,7 @@ class UserController extends Controller
             });
         }
 
-        // Filtro por Rol
+        // Filtro por Rol (admin o technician)
         if ($role = $request->input('role')) {
             if (in_array($role, ['admin', 'technician'])) {
                 $query->where('role', $role);
@@ -45,18 +45,25 @@ class UserController extends Controller
             }
         }
 
-        // Ordenamiento
-        $sortBy = $request->input('sortBy', 'id');
+        // Ordenamiento (por defecto alfabético por nombre A-Z)
+        $sortBy = $request->input('sortBy', 'name');
+        // Mapear alias enviados desde las columnas de Quasar
+        if ($sortBy === 'user') {
+            $sortBy = 'name';
+        } elseif ($sortBy === 'status') {
+            $sortBy = 'is_active';
+        }
+
         $sortOrder = $request->input('descending') === 'true' || $request->input('sortOrder') === 'desc' ? 'desc' : 'asc';
         $allowedSorts = ['id', 'name', 'email', 'role', 'is_active', 'created_at'];
 
         if (in_array($sortBy, $allowedSorts)) {
             $query->orderBy($sortBy, $sortOrder);
         } else {
-            $query->orderBy('id', 'desc');
+            $query->orderBy('name', 'asc');
         }
 
-        // Paginación o lista completa
+        // Paginación o lista completa (perPage = -1 para dropdowns/selects)
         $perPage = (int) $request->input('perPage', 15);
 
         if ($perPage === -1) {
@@ -88,7 +95,7 @@ class UserController extends Controller
     }
 
     /**
-     * Store a newly created user in storage.
+     * Registrar un nuevo usuario con contraseña hasheada.
      */
     public function store(StoreUserRequest $request): JsonResponse
     {
@@ -110,7 +117,7 @@ class UserController extends Controller
     }
 
     /**
-     * Display the specified user.
+     * Consultar el detalle de un usuario específico.
      */
     public function show(User $user): JsonResponse
     {
@@ -121,7 +128,7 @@ class UserController extends Controller
     }
 
     /**
-     * Update the specified user in storage.
+     * Actualizar los datos de un usuario (la contraseña es opcional).
      */
     public function update(UpdateUserRequest $request, User $user): JsonResponse
     {
@@ -132,6 +139,7 @@ class UserController extends Controller
             'is_active' => $request->is_active ?? $user->is_active,
         ];
 
+        // Solo actualizar contraseña si se proporcionó una nueva
         if ($request->filled('password')) {
             $userData['password'] = Hash::make($request->password);
         }
@@ -146,13 +154,13 @@ class UserController extends Controller
     }
 
     /**
-     * Toggle active/inactive status of the user.
+     * Habilitar o deshabilitar una cuenta de usuario.
      */
     public function toggleStatus(User $user): JsonResponse
     {
         $currentUser = auth('api')->user();
 
-        // Impedir que un usuario desactive su propia cuenta
+        // Evitar que el usuario logueado desactive su propia cuenta
         if ($currentUser && $currentUser->id === $user->id) {
             return response()->json([
                 'success' => false,
@@ -173,7 +181,7 @@ class UserController extends Controller
     }
 
     /**
-     * Remove the specified user from storage.
+     * Eliminar un usuario (protegiendo la cuenta en sesión).
      */
     public function destroy(User $user): JsonResponse
     {

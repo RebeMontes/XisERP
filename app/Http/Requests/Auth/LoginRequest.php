@@ -7,7 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 class LoginRequest extends FormRequest
 {
     /**
-     * Determine if the user is authorized to make this request.
+     * Determina si el usuario está autorizado para hacer esta petición.
      */
     public function authorize(): bool
     {
@@ -15,7 +15,7 @@ class LoginRequest extends FormRequest
     }
 
     /**
-     * Prepare the data for validation.
+     * Limpia y normaliza el correo antes de validar.
      */
     protected function prepareForValidation(): void
     {
@@ -27,9 +27,7 @@ class LoginRequest extends FormRequest
     }
 
     /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * Reglas de validación para las credenciales de acceso.
      */
     public function rules(): array
     {
@@ -40,9 +38,7 @@ class LoginRequest extends FormRequest
     }
 
     /**
-     * Custom message for validation errors in Spanish.
-     *
-     * @return array<string, string>
+     * Mensajes de error personalizados en español.
      */
     public function messages(): array
     {

@@ -13,11 +13,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Rutas de autenticación
 Route::prefix('auth')->group(function () {
-    // Public routes (with brute-force protection rate limiting)
+    // Login público con protección contra fuerza bruta (máximo 10 intentos por minuto)
     Route::post('login', [AuthController::class, 'login'])->middleware('throttle:10,1');
 
-    // Authenticated routes
+    // Rutas privadas que requieren token JWT válido
     Route::middleware('auth:api')->group(function () {
         Route::get('me', [AuthController::class, 'me']);
         Route::post('refresh', [AuthController::class, 'refresh']);
@@ -25,9 +26,9 @@ Route::prefix('auth')->group(function () {
     });
 });
 
-// Protected ERP Resource Routes
+// Rutas protegidas del ERP (requieren sesión activa con JWT)
 Route::middleware('auth:api')->group(function () {
-    // Módulo de Usuarios
+    // Módulo de usuarios: alternar estado activo/inactivo y CRUD completo
     Route::patch('users/{user}/toggle-status', [UserController::class, 'toggleStatus']);
     Route::apiResource('users', UserController::class);
 });

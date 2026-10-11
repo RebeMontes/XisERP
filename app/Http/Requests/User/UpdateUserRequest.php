@@ -8,7 +8,7 @@ use Illuminate\Validation\Rule;
 class UpdateUserRequest extends FormRequest
 {
     /**
-     * Determine if the user is authorized to make this request.
+     * Determina si el usuario está autorizado para modificar cuentas.
      */
     public function authorize(): bool
     {
@@ -16,7 +16,7 @@ class UpdateUserRequest extends FormRequest
     }
 
     /**
-     * Prepare the data for validation.
+     * Limpia y normaliza los campos enviados antes de validar.
      */
     protected function prepareForValidation(): void
     {
@@ -37,12 +37,11 @@ class UpdateUserRequest extends FormRequest
     }
 
     /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * Reglas de validación para actualizar un usuario existente.
      */
     public function rules(): array
     {
+        // Obtener el ID del usuario actual para ignorarlo en la unicidad del correo
         $userId = $this->route('user') instanceof \App\Models\User
             ? $this->route('user')->id
             : $this->route('user');
@@ -56,6 +55,7 @@ class UpdateUserRequest extends FormRequest
                 'max:254',
                 Rule::unique('users', 'email')->ignore($userId),
             ],
+            // Contraseña opcional al editar (solo se actualiza si se proporciona)
             'password' => ['nullable', 'string', 'min:6'],
             'role' => ['required', 'string', 'in:admin,technician'],
             'is_active' => ['boolean'],
@@ -63,9 +63,7 @@ class UpdateUserRequest extends FormRequest
     }
 
     /**
-     * Custom validation messages in Spanish.
-     *
-     * @return array<string, string>
+     * Mensajes de error personalizados en español.
      */
     public function messages(): array
     {

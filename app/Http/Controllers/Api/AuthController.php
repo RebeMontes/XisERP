@@ -10,13 +10,14 @@ use PHPOpenSourceSaver\JWTAuth\Exceptions\JWTException;
 class AuthController extends Controller
 {
     /**
-     * Authenticate user and return JWT token.
+     * Iniciar sesión: valida credenciales y retorna el token JWT junto con el usuario.
      */
     public function login(LoginRequest $request): JsonResponse
     {
         $credentials = $request->only('email', 'password');
 
         try {
+            // Intentar autenticar contra el guard de la API
             if (!$token = auth('api')->attempt($credentials)) {
                 return response()->json([
                     'success' => false,
@@ -27,6 +28,7 @@ class AuthController extends Controller
             /** @var \App\Models\User $user */
             $user = auth('api')->user();
 
+            // Bloquear acceso si la cuenta fue desactivada por un administrador
             if (!$user->is_active) {
                 auth('api')->logout();
 
@@ -47,7 +49,7 @@ class AuthController extends Controller
     }
 
     /**
-     * Get authenticated user profile.
+     * Obtener los datos del usuario autenticado actualmente.
      */
     public function me(): JsonResponse
     {
@@ -75,11 +77,12 @@ class AuthController extends Controller
     }
 
     /**
-     * Refresh an existing token.
+     * Renovar el token JWT antes de que expire.
      */
     public function refresh(): JsonResponse
     {
         try {
+            // Genera un nuevo token e invalida el anterior en la lista negra
             $newToken = auth('api')->refresh();
 
             return $this->respondWithToken($newToken, 'Token renovado con éxito.');
@@ -93,7 +96,7 @@ class AuthController extends Controller
     }
 
     /**
-     * Log out user (invalidate token).
+     * Cerrar sesión: invalida el token JWT en el backend.
      */
     public function logout(): JsonResponse
     {
@@ -114,7 +117,7 @@ class AuthController extends Controller
     }
 
     /**
-     * Format response structure with token.
+     * Estructura estándar de respuesta para tokens JWT y datos del usuario.
      */
     protected function respondWithToken(string $token, string $message = ''): JsonResponse
     {
