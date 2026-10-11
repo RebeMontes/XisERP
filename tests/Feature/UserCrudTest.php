@@ -162,4 +162,40 @@ class UserCrudTest extends TestCase
         sort($sortedNames, SORT_NATURAL | SORT_FLAG_CASE);
         $this->assertEquals($sortedNames, $names);
     }
+
+    public function test_technician_cannot_access_user_crud(): void
+    {
+        $technician = User::create([
+            'name' => 'Técnico Sin Permiso',
+            'email' => 'tech_no_auth_' . time() . '@erp.com',
+            'password' => Hash::make('clave123'),
+            'role' => 'technician',
+            'is_active' => true,
+        ]);
+
+        $loginResponse = $this->postJson('/api/auth/login', [
+            'email' => $technician->email,
+            'password' => 'clave123',
+        ]);
+
+        $techToken = $loginResponse->json('data.access_token');
+
+        // Intento de listar usuarios
+        $responseList = $this->withHeader('Authorization', "Bearer {$techToken}")
+            ->getJson('/api/users');
+        $responseList->assertStatus(403)
+            ->assertJson([
+                'success' => false,
+            ]);
+
+        // Intento de crear usuario
+        $responseCreate = $this->withHeader('Authorization', "Bearer {$techToken}")
+            ->postJson('/api/users', [
+                'name' => 'Intento Hack',
+                'email' => 'hack@erp.com',
+                'password' => 'clave123',
+                'role' => 'admin',
+            ]);
+        $responseCreate->assertStatus(403);
+    }
 }

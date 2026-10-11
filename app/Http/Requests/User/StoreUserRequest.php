@@ -7,11 +7,11 @@ use Illuminate\Foundation\Http\FormRequest;
 class StoreUserRequest extends FormRequest
 {
     /**
-     * Determina si el usuario está autorizado para registrar cuentas.
+     * Determina si el usuario está autorizado para registrar cuentas (solo admin).
      */
     public function authorize(): bool
     {
-        return true;
+        return auth('api')->user()?->role === 'admin';
     }
 
     /**

@@ -8,11 +8,11 @@ use Illuminate\Validation\Rule;
 class UpdateUserRequest extends FormRequest
 {
     /**
-     * Determina si el usuario está autorizado para modificar cuentas.
+     * Determina si el usuario está autorizado para modificar cuentas (solo admin).
      */
     public function authorize(): bool
     {
-        return true;
+        return auth('api')->user()?->role === 'admin';
     }
 
     /**

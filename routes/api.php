@@ -28,7 +28,9 @@ Route::prefix('auth')->group(function () {
 
 // Rutas protegidas del ERP (requieren sesión activa con JWT)
 Route::middleware('auth:api')->group(function () {
-    // Módulo de usuarios: alternar estado activo/inactivo y CRUD completo
-    Route::patch('users/{user}/toggle-status', [UserController::class, 'toggleStatus']);
-    Route::apiResource('users', UserController::class);
+    // Módulo de usuarios: exclusivo para usuarios con rol administrador
+    Route::middleware('role:admin')->group(function () {
+        Route::patch('users/{user}/toggle-status', [UserController::class, 'toggleStatus']);
+        Route::apiResource('users', UserController::class);
+    });
 });
