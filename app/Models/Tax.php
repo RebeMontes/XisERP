@@ -13,4 +13,9 @@ class Tax extends Model
         'created_at',
         'updated_at'
     ];
+
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'product_id');
+    }
 }

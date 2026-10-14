@@ -16,6 +16,6 @@ class DiagnosticTest extends Model
 
     public function serviceOrderDiagnostics()
     {
-        return $this->hasMany(ServiceOrderDiagnostic::class, 'diagnostic_test_id');
+        return $this->belongsTo(ServiceOrderDiagnostic::class, 'service_order_diagnostic_id');
     }
 }
