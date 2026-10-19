@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\CustomerController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -33,4 +34,9 @@ Route::middleware('auth:api')->group(function () {
         Route::patch('users/{user}/toggle-status', [UserController::class, 'toggleStatus']);
         Route::apiResource('users', UserController::class);
     });
+
+    // Módulo de clientes
+    Route::patch('customers/{customer}/toggle-status', [CustomerController::class, 'toggleStatus']);
+    Route::apiResource('customers', CustomerController::class);
+
 });
