@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\CustomerController;
+use App\Http\Controllers\Api\CompanyController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -38,5 +39,9 @@ Route::middleware('auth:api')->group(function () {
     // Módulo de clientes
     Route::patch('customers/{customer}/toggle-status', [CustomerController::class, 'toggleStatus']);
     Route::apiResource('customers', CustomerController::class);
+
+    // Módulo de empresas
+    Route::patch('companies/{company}/toggle-status', [CompanyController::class, 'toggleStatus']);
+    Route::apiResource('companies', CompanyController::class);
 
 });
