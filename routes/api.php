@@ -4,6 +4,11 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\CustomerController;
 use App\Http\Controllers\Api\CompanyController;
+use App\Http\Controllers\Api\UnitController;
+use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\SubcategoryController;
+use App\Http\Controllers\Api\BrandController;
+use App\Http\Controllers\Api\ProductController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -43,5 +48,25 @@ Route::middleware('auth:api')->group(function () {
     // Módulo de empresas
     Route::patch('companies/{company}/toggle-status', [CompanyController::class, 'toggleStatus']);
     Route::apiResource('companies', CompanyController::class);
+
+    // Unidades
+    Route::patch('units/{unit}/toggle-status', [UnitController::class, 'toggleStatus']);
+    Route::apiResource('units', UnitController::class);
+
+    // Categorías
+    Route::patch('categories/{category}/toggle-status', [CategoryController::class, 'toggleStatus']);
+    Route::apiResource('categories', CategoryController::class);
+
+    // Subcategorías
+    Route::patch('subcategories/{subcategory}/toggle-status', [SubcategoryController::class, 'toggleStatus']);
+    Route::apiResource('subcategories', SubcategoryController::class);
+
+    // Marcas
+    Route::patch('brands/{brand}/toggle-status', [BrandController::class, 'toggleStatus']);
+    Route::apiResource('brands', BrandController::class);
+
+    // Productos
+    Route::patch('products/{product}/toggle-status', [ProductController::class, 'toggleStatus']);
+    Route::apiResource('products', ProductController::class);
 
 });

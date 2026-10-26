@@ -25,9 +25,9 @@ class Product extends Model
         return $this->belongsTo(Subcategory::class, 'subcategory_id');
     }
 
-    public function branches()
+    public function brands()
     {
-        return $this->belongsTo(Branch::class, 'branch_id');
+        return $this->belongsTo(Brand::class, 'brand_id');
     }
 
     public function units()
